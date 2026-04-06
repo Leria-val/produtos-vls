@@ -97,7 +97,7 @@ const categoryController = {
       }
 
       await category.update({
-        name: name ?? category.name,
+        name: name || category.name,
         description: description ?? category.description,
       });
 

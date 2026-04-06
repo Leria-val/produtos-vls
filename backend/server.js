@@ -1,7 +1,7 @@
 import express, { json } from "express";
-import { connect } from "./database/sqlConnection.js";
+import { connect } from "./config/sqlConnection.js";
 import categoryRouter from "./routes/categoryRouter.js";
-import productRouter from "./routes/productRoutes.js";
+import productRouter from "./routes/productRouter.js";
 import authRouter from "./routes/authRouter.js";
 
 import 'dotenv/config'

@@ -8,8 +8,6 @@ const authController = {
     try {
       const { email, password, role } = req.body;
       console.log(role)
-      // hash da senha
-      const hashedPassword = await bcrypt.hash(password, 10);
 
       const user = await User.create({
         email,
@@ -45,7 +43,13 @@ const authController = {
         expiresIn: "1h",
       });
 
-      res.json({ message: "Login sucesso", token });
+      res.json({ message: "Login sucesso", 
+        token,
+        user: {
+          email: user.email,
+          role: user.role
+        }
+       });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

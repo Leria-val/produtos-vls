@@ -1,16 +1,16 @@
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
-import { sequelize } from "../database/sqlConnection.js";
+import { sequelize } from "../config/sqlConnection.js";
 import { Op } from "sequelize";
 
 const productController = {
   getAll: async (req, res) => {
     try {
-      const { category, minPrice, maxPrice, order } = req.query;
+      const { categoryId, minPrice, maxPrice, order } = req.query;
 
       const where = {};
 
-      if (category) where.category = category;
+      if (categoryId) where.categoryId = categoryId;
 
       if (minPrice || maxPrice) {
         console.log("aaaa")
@@ -25,6 +25,7 @@ const productController = {
         include: {
           model: Category,
           as: "category",
+          attributes: ["id", "name"]
         },
       });
 

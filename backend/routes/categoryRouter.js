@@ -7,13 +7,22 @@ const categoryRouter = express.Router();
 
 categoryRouter.get("/", categoryController.getAll);
 categoryRouter.get("/:id", categoryController.getById);
+
+
 categoryRouter.post(
   "/",
   authMiddleware,
   roleMiddleware("admin"),
   categoryController.create,
 );
-categoryRouter.put("/:id", categoryController.update);
-categoryRouter.delete("/:id", categoryController.delete);
+categoryRouter.put("/:id",
+  authMiddleware,
+  roleMiddleware("admin"), 
+  categoryController.update);
+
+categoryRouter.delete("/:id",
+  authMiddleware,
+  roleMiddleware("admin"), 
+  categoryController.delete);
 
 export default categoryRouter;

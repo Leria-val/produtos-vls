@@ -1,5 +1,5 @@
 import { DataTypes, DATE } from "sequelize";
-import { sequelize } from "../database/sqlConnection.js";
+import { sequelize } from "../config/sqlConnection.js";
 import Category from "./Category.js";
 
 const Product = sequelize.define("Product",{
@@ -8,8 +8,9 @@ const Product = sequelize.define("Product",{
         allowNull: false
     },
     price:{
-        type: DataTypes.FLOAT,
-        allowNull: false
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        min: 0
     },
     categoryId:{
         type: DataTypes.INTEGER,
