@@ -1,6 +1,6 @@
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
-import { sequelize } from "../config/sqlConnection.js";
+import { sequelize } from "../config/connection.js";
 import { Op } from "sequelize";
 
 const productController = {

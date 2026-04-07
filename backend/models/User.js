@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/sqlConnection.js';
+import { sequelize } from '../config/connection.js';
 import bcrypt from 'bcrypt';
 
 
