@@ -14,7 +14,7 @@ export function authMiddleware(req, res, next) {
   const [, token] = authHeader.split(" ");
 
   try {
-    const decoded = jwt.verify(token, SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "segredo");
     req.user = {
       id: decoded.id,
       email: decoded.email,

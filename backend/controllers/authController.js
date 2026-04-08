@@ -7,6 +7,9 @@ const authController = {
   register: async (req, res) => {
     try {
       const { email, password, role } = req.body;
+      // ENCRIPTAR LA CONTRASEÑA 
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
       console.log(role)
 
       const user = await User.create({
@@ -15,7 +18,10 @@ const authController = {
         role: role || 'user'
       });
 
-      res.status(201).json({ message: "Usuário criado", user });
+      res.status(201).json({ message: "Usuário criado", 
+        user: { email: user.email, role: user.role } 
+      });
+
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -39,9 +45,10 @@ const authController = {
       }
 
       // gerar token
-      const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET, {
-        expiresIn: "1h",
-      });
+      const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, 
+        SECRET, 
+        { expiresIn: "1h" }
+      );
 
       res.json({ message: "Login sucesso", 
         token,
