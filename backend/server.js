@@ -23,15 +23,15 @@ app.use('/auth', authRouter)
 
 const startServer = async () => {
   try {
-    await sequelize.sync({ force: false }); // Esto crea las tablas si no existen
-    console.log("Conexão com o banco de dados estabelecida com sucesso!");
+    // 1. Conectamos y Sincronizamos (usa la función que ya tiene el try/catch)
+    await connect(); 
     
+    // 2. Encendemos el server
     app.listen(PORT, () => {
-      //await connect();
       console.log(`Servidor rodando em: http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error("Não foi possível conectar ao banco de dados:", error);
+    console.error("Erro fatal ao iniciar o servidor:", error);
   }
 };
 
