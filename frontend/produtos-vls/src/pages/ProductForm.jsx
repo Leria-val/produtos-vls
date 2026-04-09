@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { createProduct, updateProduct, getProductById } from '../api/productService';
+import productService from '../api/productService';
 
 const ProductForm = () => {
   const { id } = useParams(); // Pega o ID da URL se existir
@@ -12,7 +12,7 @@ const ProductForm = () => {
     if (isEdit) {
       const loadProduct = async () => {
         try {
-          const response = await getProductById(id);
+          const response = await productService.getById(id);
           setProduct(response.data);
         } catch (error) {
           console.error("Erro ao carregar produto", error);
@@ -26,9 +26,9 @@ const ProductForm = () => {
     e.preventDefault();
     try {
       if (isEdit) {
-        await updateProduct(id, product);
+        await productService.create(product);
       } else {
-        await createProduct(product);
+        await productService.create(product);
       }
       navigate('/dashboard');
     } catch (error) {

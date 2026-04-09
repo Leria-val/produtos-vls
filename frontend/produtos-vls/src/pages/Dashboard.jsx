@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { getProducts, deleteProduct } from '../api/productService';
+import productService from '../api/productService';
 import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ const Dashboard = () => {
 
   const loadProducts = async () => {
     try {
-      const response = await getProducts();
+      const response = await productService.getAll();
       setProducts(response.data);
     } catch (error) {
       console.error("Erro ao carregar produtos");
@@ -25,7 +25,7 @@ const Dashboard = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm("Deseja realmente excluir este produto?")) {
-      await deleteProduct(id);
+      await productService.delete(id);
       loadProducts(); // Recarrega a lista
     }
   };
