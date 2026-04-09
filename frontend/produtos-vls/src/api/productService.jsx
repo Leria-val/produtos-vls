@@ -19,7 +19,7 @@ const productService = {
         return response.data;
     },
      
-    dlelete: async (id) => {
+    delete: async (id) => {
         const response = await
         apiClient.delete(`/prooducts/${id}`);
         return response.data;
