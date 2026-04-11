@@ -1,6 +1,6 @@
 export function roleMiddleware(requiredRole) {
     return (req, res, next) => {
-        // Leemos desde req.user.role porque así lo definiste en el authMiddleware
+        // Leemos desde req.user.role porque así esta en authMiddleware
         const userRole = req.user?.role; 
 
         if (userRole === 'admin') {

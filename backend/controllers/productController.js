@@ -78,7 +78,7 @@ const productController = {
 
   create: async (req, res) => {
     try {
-      const { name, price, categoryId } = req.body;
+      const { name, price, categoryId, description } = req.body;
 
       const category = await Category.findByPk(categoryId);
 
@@ -94,6 +94,7 @@ const productController = {
         name,
         price,
         categoryId,
+        description,
       });
 
       return res.status(201).json({
@@ -113,7 +114,7 @@ const productController = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-      const { name, price, categoryId } = req.body;
+      const { name, price, categoryId, description } = req.body;
 
       const product = await Product.findByPk(id);
 
@@ -137,7 +138,7 @@ const productController = {
         }
       }
 
-      await product.update({ name, price, categoryId });
+      await product.update({ name, price, categoryId, description });
 
       return res.status(200).json({
         success: true,

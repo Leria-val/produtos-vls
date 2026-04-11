@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 
-// Importação dos seus componentes
+// componentes
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import Layout from './components/Layout';
 
-// Importação das suas páginas
+// páginas
+import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -17,17 +18,18 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Rotas Públicas */}
+          {/* home */}
+          <Route path="/" element={<Home />} />
+          
+          {/* rotas públicas */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
 
-          {/* Rotas Privadas (Qualquer usuário logado) */}
+          {/* Rotas Privadas */}
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               
-              {/* Rotas de Admin (Apenas admin) */}
               <Route element={<AdminRoute />}>
                 <Route path="/products/new" element={<ProductForm />} />
                 <Route path="/products/edit/:id" element={<ProductForm />} />
@@ -35,8 +37,8 @@ function App() {
             </Route>
           </Route>
 
-          {/* Rota 404 - Opcional */}
-          <Route path="*" element={<h1>Página não encontrada</h1>} />
+          {/*se o usuario escreve rotas inexistentes, vai p Home */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
     </AuthProvider>

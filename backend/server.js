@@ -12,21 +12,21 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use (cors ({
-  "origin": "https://localhost:5173",
+  "origin": "http://localhost:5173",
   "methods": "GET, POST, PUT, DELETE",
-  "credentials": "true"
+  "credentials": true
 }));
 app.use(express.json());
-app.use('/categories', categoryRouter)
-app.use('/products', productRouter)
-app.use('/auth', authRouter)
+app.use('/api/categories', categoryRouter)
+app.use('/api/products', productRouter)
+app.use('/api/auth', authRouter)
 
 const startServer = async () => {
   try {
-    // 1. Conectamos y Sincronizamos (usa la función que ya tiene el try/catch)
+    // conectamos y Sincronizamos 
     await connect(); 
     
-    // 2. Encendemos el server
+    // encendemos el server
     app.listen(PORT, () => {
       console.log(`Servidor rodando em: http://localhost:${PORT}`);
     });

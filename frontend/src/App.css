@@ -1,0 +1,239 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Home Container */
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Tarjeta Principal */
+.home-card {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+}
+
+.home-title {
+  color: #1a73e8;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.home-subtitle {
+  color: #5f6368;
+  margin-bottom: 30px;
+}
+
+/* Grupo de Botones */
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.btn-primary {
+  padding: 12px 25px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #1557b0;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  padding: 12px 25px;
+  background-color: transparent;
+  color: #1a73e8;
+  border: 2px solid #1a73e8;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: #e8f0fe;
+}
+
+/* Cuadro de Información de Prueba */
+.info-card {
+  background-color: #e8f0fe;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: left;
+  border: 1px solid #d2e3fc;
+}
+
+.info-card h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.test-info {
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.5;
+}
+
+.test-info p {
+  margin: 5px 0;
+}
+
+/* Login & Register Containers (Reutilizan el fondo gris claro del home) */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Tarjeta de Formulario */
+.auth-card {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.auth-card h2 {
+  color: #1a73e8;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+}
+
+/* Estilos de los inputs */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.auth-input {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+/* Error Message */
+.error-message {
+  color: #d93025;
+  background-color: #fce8e6;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  margin: 10px 0;
+}
+
+/* Botón de volver */
+.btn-link {
+  background: none;
+  border: none;
+  color: #1a73e8;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+/* Estilos del Dashboard */
+.dashboard-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Tabla Moderna */
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.product-table th, .product-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.product-table th {
+  background-color: #1a73e8;
+  color: white;
+  font-weight: 600;
+}
+
+.product-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Badge de Rol */
+.role-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  background-color: #e8f0fe;
+  color: #1a73e8;
+}
+
+.btn-edit {
+  background-color: #fb8c00;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.btn-delete {
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}

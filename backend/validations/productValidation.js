@@ -8,5 +8,6 @@ export const productSchema = Joi.object({
     price: Joi.number().positive().required().messages({
         'number.positive': 'O preço deve ser um valor maior que zero'
     }),
-    categoryId: Joi.number().required()
+    categoryId: Joi.number().integer().required(),
+    description: Joi.string().allow('', null).optional()
 });
