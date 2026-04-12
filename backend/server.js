@@ -4,6 +4,8 @@ import { connect, sequelize } from "./config/connection.js";
 import categoryRouter from "./routes/categoryRouter.js";
 import productRouter from "./routes/productRouter.js";
 import authRouter from "./routes/authRouter.js";
+import Product from "./models/Product.js";
+import Category from "./models/Category.js";
 
 
 import 'dotenv/config'
@@ -25,6 +27,16 @@ const startServer = async () => {
   try {
     // conectamos y Sincronizamos 
     await connect(); 
+
+    const count = await Category.count();
+    if (count === 0) {
+      await Category.bulkCreate([
+        { id: 1, name: 'Eletrônicos', description: 'Tecnologia' },
+        { id: 2, name: 'Móveis', description: 'Casa e escritório' },
+        { id: 3, name: 'Geral', description: 'Outros' }
+      ]);
+      console.log("🌱 Categorias iniciais criadas automaticamente!");
+    }
     
     // encendemos el server
     app.listen(PORT, () => {

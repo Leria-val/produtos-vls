@@ -18,6 +18,12 @@ const productService = {
         apiClient.post('/products', productData);
         return response.data;
     },
+    
+    update: async (id, productData) => {
+        const response = await 
+        apiClient.put(`/products/${id}`, productData);
+        return response.data;
+    },
      
     delete: async (id) => {
         const response = await

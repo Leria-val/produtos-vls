@@ -26,12 +26,18 @@ const ProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!product.name || !product.price) {
+    alert("Por favor, preencha os campos obrigatórios.");
+    return;
+  }
     try {
-      // Preparamos los datos: Aseguramos que el precio sea número
-      const dataToSend = { 
-        ...product, 
-        price: Number(product.price) 
-      };
+    const dataToSend = { 
+      name: product.name,
+      price: Number(product.price),
+      description: product.description || '', // Evita que mande undefined
+      categoryId: Number(product.categoryId || 1) // Default a 1 si está vacío
+    };
 
       if (isEdit) {
         await productService.update(id, dataToSend); // ¡Corregido a update!
@@ -45,11 +51,13 @@ const ProductForm = () => {
     }
   };
 
-  return (
+ return (
     <div className="auth-container">
       <div className="auth-card" style={{ maxWidth: '500px' }}>
         <h2>{isEdit ? 'Editar Produto' : 'Novo Produto'}</h2>
         <form className="auth-form" onSubmit={handleSubmit}>
+          
+          {/* Campo: Nome */}
           <div style={{ textAlign: 'left' }}>
             <label>Nome:</label>
             <input 
@@ -61,6 +69,7 @@ const ProductForm = () => {
             />
           </div>
           
+          {/* Campo: Preço */}
           <div style={{ textAlign: 'left' }}>
             <label>Preço:</label>
             <input 
@@ -72,18 +81,36 @@ const ProductForm = () => {
               required 
             />
           </div>
+
+          {/* NUEVO: Campo Categoria (Arriba de la descripción para mejor flujo) */}
+          <div style={{ textAlign: 'left' }}>
+            <label>Categoria:</label>
+            <select 
+              className="auth-input" 
+              value={product.categoryId} 
+              onChange={e => setProduct({...product, categoryId: e.target.value})}
+              required
+            >
+              <option value="">Selecione uma categoria</option>
+              <option value="1">Eletrônicos</option>
+              <option value="2">Móveis</option>
+              <option value="3">Geral</option>
+            </select>
+          </div>
           
+          {/* Campo: Descrição */}
           <div style={{ textAlign: 'left' }}>
             <label>Descrição:</label>
             <textarea 
               className="auth-input"
               style={{ minHeight: '80px', fontFamily: 'inherit' }}
-              value={product.description} 
+              value={product.description || ''} 
               onChange={e => setProduct({...product, description: e.target.value})} 
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+          {/* Botones (Al final) */}
+          <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
             <button className="btn-primary" type="submit" style={{ flex: 1 }}>
               {isEdit ? 'Atualizar' : 'Cadastrar'}
             </button>
@@ -91,6 +118,7 @@ const ProductForm = () => {
               Cancelar
             </button>
           </div>
+
         </form>
       </div>
     </div>

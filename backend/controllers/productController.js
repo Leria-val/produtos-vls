@@ -1,6 +1,5 @@
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
-import { sequelize } from "../config/connection.js";
 import { Op } from "sequelize";
 
 const productController = {
@@ -13,7 +12,6 @@ const productController = {
       if (categoryId) where.categoryId = categoryId;
 
       if (minPrice || maxPrice) {
-        console.log("aaaa")
         where.price = {};
         if (minPrice) where.price[Op.gte] = Number(minPrice);
         if (maxPrice) where.price[Op.lte] = Number(maxPrice);
@@ -57,7 +55,6 @@ const productController = {
       if (!product) {
         return res.status(404).json({
           success: false,
-          data: null,
           message: "Produto não encontrado",
         });
       }
@@ -80,6 +77,13 @@ const productController = {
     try {
       const { name, price, categoryId, description } = req.body;
 
+      if (!name || !price || !categoryId) {
+        return res.status(400).json({
+          success: false,
+          message: "Campos obrigatórios: name, price e categoryId"
+        });
+        }
+
       const category = await Category.findByPk(categoryId);
 
       if (!category) {
@@ -92,9 +96,9 @@ const productController = {
 
       const product = await Product.create({
         name,
-        price,
-        categoryId,
-        description,
+        price: Number(price),
+        categoryId: Number(categoryId),
+        description: description || "",
       });
 
       return res.status(201).json({
@@ -138,7 +142,14 @@ const productController = {
         }
       }
 
-      await product.update({ name, price, categoryId, description });
+      await product.update({
+        name: name || product.name,
+        price: price ? Number(price) : product.price,
+        description: description !== undefined ? description : product.description,
+        categoryId: categoryId ? Number(categoryId) : product.categoryId
+      });
+
+      await product.reload();
 
       return res.status(200).json({
         success: true,

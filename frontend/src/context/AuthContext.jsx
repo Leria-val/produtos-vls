@@ -7,36 +7,39 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Al cargar la app, verificamos si ya existe un token guardado
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
     const savedUser = localStorage.getItem('user');
 
     if (savedToken && savedUser) {
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error("Erro ao parsear usuário do localStorage");
+        localStorage.clear(); 
+      }
     }
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
     try {
-      // Llamamos al authController.login del backend
       const response = await api.post('/auth/login', { email, password });
       
       const { token, user: userData } = response.data;
 
-      // Guardamos en localStorage para persistencia
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
 
-      // Actualizamos el estado global
       setUser(userData);
       return { success: true };
     } catch (error) {
-      console.error("Erro no login:", error.response?.data?.message || error.message);
+      
+      const errorMsg = error.response?.data?.error || error.response?.data?.message || "Erro ao conectar ao servidor";
+      console.error("Erro no login:", errorMsg);
       return { 
         success: false, 
-        message: error.response?.data?.message || "Erro ao conectar ao servidor" 
+        message: errorMsg 
       };
     }
   };
@@ -54,7 +57,7 @@ export const AuthProvider = ({ children }) => {
       logout, 
       authenticated: !!user, 
       loading,
-      isAdmin: user?.role === 'admin' // Helper para verificar admin fácil
+      isAdmin: user?.role === 'admin'
     }}>
       {children}
     </AuthContext.Provider>

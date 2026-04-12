@@ -7,19 +7,27 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
-    const result = await login(email, password);
-    
-    if (result.success) {
-      navigate('/dashboard');
-    } else {
-      setError(result.message);
+    setLoading(true);
+
+  try {
+      const result = await login(email, password);
+      
+      if (result.success) {
+        navigate('/dashboard');
+      } else {
+        setError(result.message || result.error || 'Erro ao realizar login');
+      }
+    } catch (err) {
+      setError('Erro de conexão con o servidor');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,7 +43,8 @@ const Login = () => {
             placeholder="E-mail" 
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
-            required 
+            disabled={loading}
+            required
           />
           <input 
             className="auth-input"
@@ -43,17 +52,21 @@ const Login = () => {
             placeholder="Senha" 
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
+            disabled={loading}
             required 
           />
           
           {error && <div className="error-message">{error}</div>}
           
-          <button className="btn-primary" type="submit">
-            Entrar
+          <button 
+            className="btn-primary" 
+            type="submit" 
+            disabled={loading}>
+            {loading ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
 
-        <button className="btn-link" onClick={() => navigate('/')}>
+        <button className="btn-link" onClick={() => navigate('/')} disabled={loading}>
           ← Voltar para o Início
         </button>
       </div>

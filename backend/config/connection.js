@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import 'dotenv/config';
 
+
 const sequelize = new Sequelize(
   process.env.DB_NAME, 
   process.env.DB_USER, 
@@ -17,7 +18,7 @@ const sequelize = new Sequelize(
 async function connect() {
   try{
   await sequelize.authenticate();
-  await sequelize.sync({ force: false }); //asegura que as tabelas existam mas é opcional :p
+  await sequelize.sync({ force: true }); //asegura que as tabelas existam mas é opcional :p
 
   console.log("conexão com PostgreSQL estabelecida.");
 } catch (error) {

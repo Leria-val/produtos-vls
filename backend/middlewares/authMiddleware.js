@@ -11,19 +11,20 @@ export function authMiddleware(req, res, next) {
   }
 
   //["Bearer","jwtshuashuashaushaa.ashuasuhashusa.ashuahsas"]
-  const [, token] = authHeader.split(" ");
+const parts = authHeader.split(" ");
+  if (parts.length !== 2 || parts[0] !== "Bearer") {
+    return res.status(401).json({ error: "Token mal formatado" });
+  }
+
+  const token = parts[1];
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "segredo");
-    req.user = {
-      id: decoded.id,
-      email: decoded.email,
-      role: decoded.role
-    };
+    
+    req.user = decoded; 
     next();
   } catch (error) {
-    return res.status(401).json({
-      error: "Token invalido",
-    });
+    console.error("Erro na verificação do JWT:", error.message);
+    return res.status(401).json({ error: "Token inválido ou expirado" });
   }
 }

@@ -1,6 +1,6 @@
 import { DataTypes, DATE } from "sequelize";
 import { sequelize } from "../config/connection.js";
-import Category from "./Category.js";
+import Category  from "./Category.js";
 
 const Product = sequelize.define("Product",{
     name:{
@@ -12,6 +12,9 @@ const Product = sequelize.define("Product",{
         allowNull: false,
         min: 0
     },
+    description: { 
+        type: DataTypes.TEXT },
+        
     categoryId:{
         type: DataTypes.INTEGER,
         references:{
@@ -24,4 +27,4 @@ const Product = sequelize.define("Product",{
 Category.hasMany(Product, {foreignKey:"categoryId", as: "products"})
 Product.belongsTo(Category,{foreignKey:"categoryId",as: "category"})
 
-export default Product
+export default Product;
