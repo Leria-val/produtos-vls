@@ -58,7 +58,7 @@ As rotas críticas são protegidas por um encadeamento de middlewares: authMiddl
 
 ## 🛠️ Instalação e Configuração
 
-### 1. Backend
+## 1. Backend
 
 ```bash
 cd backend
@@ -73,7 +73,7 @@ JWT_SECRET=segredo_super_seguro
 
 npm run dev
 
-### 2. Frontend
+# 2. Frontend
 cd frontend
 npm install
 npm start
