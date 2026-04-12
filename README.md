@@ -1,207 +1,84 @@
-# 🚀 Porducto-vls - Node.js + React (JWT + Roles)
+# Projeto Fullstack: Sistema de Gestão de Produtos
 
-## 📖 Descrição
+Este projeto é uma aplicação Fullstack completa, desenvolvida para demonstrar competências em Node.js (Express) integrando um banco de dados PostgreSQL com um frontend em React. A aplicação foca em segurança, controle de acesso e boas práticas de desenvolvimento modular.
 
-Este projeto consiste no desenvolvimento de uma aplicação fullstack utilizando Node.js (Express + SQL) no backend e React no frontend.
+## Arquitetura do Sistema
 
-A aplicação implementa:
-
-- Autenticação com JWT  
-- Autorização por níveis de acesso admin e user 
-- CRUD completo  
-- Validação de dados  
-- Integração entre backend e frontend  
-- Estrutura modular escalável  
-
----
-
-## 🏗️ Arquitetura do Projeto
-
-/backend
-├── /models         
-├── /controllers    
-├── /routes         
-├── /middlewares    
-├── /config         
-├── /utils         
-└── server.js 
-
-/frontend
-├── /src
-│   ├── /pages        
-│   ├── /components  
-│   ├── /services     
-│   └── App.js
-
----
-
-## 🗄️ Banco de Dados
-
-Utilizado PostgreSQL ou MySQL.
-
-### Entidades:
-
-#### Users (obrigatória)
-- id
-- name
-- email
-- password (hash com bcrypt)
-- role (admin | user)
-
-#### Segunda entidade (ex: Products ou Tasks)
-- id
-- name
-- description
-- user_id
-
----
-
-## 🔌 API REST
-
-### CRUD Completo
-
-| Método | Endpoint              | Descrição        |
-|--------|----------------------|------------------|
-| GET    | /api/resource        | Listar todos     |
-| GET    | /api/resource/:id    | Buscar por ID    |
-| POST   | /api/resource        | Criar            |
-| PUT    | /api/resource/:id    | Atualizar        |
-| DELETE | /api/resource/:id    | Deletar          |
-
----
-
-## 🔐 Autenticação
-
-- Login com email e senha  
-- Hash de senha com bcrypt  
-- Geração de JWT  
-- Rotas protegidas  
-
-### Fluxo:
-
-1. Usuário faz login  
-2. Backend valida  
-3. Gera token  
-4. Frontend armazena  
-5. Envia nas requisições  
-
----
-
-## 🛡️ Autorização por Roles
-
-- admin: acesso total  
-- user: acesso limitado  
-
-Middleware controla acesso a rotas protegidas.
-
----
-
-## ✅ Validações
-
-- Campos obrigatórios  
-- Email válido  
-- Senha mínima  
-- Middleware de validação  
-
----
-
-## 🌐 CORS
-
-app.use(cors({ origin: 'http://localhost:3000⁠�' }))
-
----
-
-## 🖥️ Frontend (React)
-
-### Funcionalidades
-
-- Login  
-- Consumo da API  
-- Listagem  
-- Criação  
-- Exclusão  
-- Uso de JWT  
-- Proteção de rotas  
-- Feedback de erro e loading  
-
----
-
-### Telas
-
-- Login  
-- Dashboard (CRUD)  
-
----
-
-## 🔗 Axios
-
-import axios from 'axios'
-const api = axios.create({ baseURL: 'http://localhost:5000/api⁠�' })
-api.interceptors.request.use(config => { const token = localStorage.getItem('token') if (token) { config.headers.Authorization = Bearer ${token} } return config })
-export default api
-
----
-
-## 🚀 Instalação
+A aplicação segue o padrão MVC (Model-View-Controller) para garantir escalabilidade e organização.
 
 ### Backend
-
-cd backend 
-npm install 
-npm run dev
-
-Criar .env:
-DB_HOST= 
-DB_USER= 
-DB_PASS= 
-DB_NAME= 
-JWT_SECRET=
-
----
+- **models/**: Definição de tabelas e relacionamentos via Sequelize.
+- **controllers/**: Lógica de negócio e manipulação de requisições.
+- **routes/**: Endpoints da API REST.
+- **middlewares/**: Camadas de segurança (JWT) e controle de Roles.
+- **validations/**: Esquemas de validação de dados antes da persistência.
+- **config/**: Configurações de conexão com o banco e variáveis de ambiente.
 
 ### Frontend
+- **context/**: Gerenciamento de estado global de autenticação.
+- **api/**: Configuração do Axios com interceptores para injeção automática de Token.
+- **pages/**: Interfaces de usuário (Login, Dashboard, Formulários).
 
-cd frontend 
-npm install 
+## Modelo de Dados (Relacional)
+
+Utilizamos o PostgreSQL com as seguintes entidades:
+
+1. **Users**: Gestão de acesso.  
+   - id, email, password (encriptada com bcrypt), role (admin | user).
+
+2. **Products**: Gestão de estoque.  
+   - id, name, price, description, categoryId.
+
+3. **Categories**: Classificação de produtos.  
+   - id, name.
+
+Relacionamento: Products possui uma chave estrangeira para Categories (1:N), garantindo integridade referencial.
+
+## 🔐 Segurança e Regras de Negócio
+
+### 1. Autenticação e Autorização
+- **JWT (JSON Web Token)**: Emitido no login e validado em todas as rotas privadas.
+- **Controle de Níveis (Roles)**:
+  - **User**: Pode visualizar produtos.
+  - **Admin**: Acesso total (Criar, Editar e Excluir).
+
+## 2. Proteção de Rotas
+
+As rotas críticas são protegidas por um encadeamento de middlewares: authMiddleware ➡ roleMiddleware('admin') ➡ validateMiddleware ➡ Controller.
+
+## 🔌 API Endpoints (Resumo)
+
+| Método | Endpoint            | Proteção   | Descrição                                         |
+|--------|--------------------|------------|--------------------------------------------------|
+| POST   | /api/auth/login    | Pública    | Autentica usuário e retorna Token.              |
+| GET    | /api/products      | User/Admin | Lista todos os produtos com suas categorias.    |
+| POST   | /api/products      | Admin      | Cria um novo produto (Validação Joi).           |
+| PUT    | /api/products/:id  | Admin      | Atualiza dados de um produto existente.         |
+| DELETE | /api/products/:id  | Admin      | Remove permanentemente um produto.              |
+
+## 🛠️ Instalação e Configuração
+
+### 1. Backend
+
+```bash
+cd backend
+npm install
+
+DB_NAME=produtos_db
+DB_USER=postgres
+DB_PASS=sua_senha
+DB_HOST=127.0.0.1
+DB_PORT=5432
+JWT_SECRET=segredo_super_seguro
+
+npm run dev
+
+### 2. Frontend
+cd frontend
+npm install
 npm start
 
----
-
-## 📋 Checklist
-
-- API funcional  
-- CRUD SQL  
-- Login + JWT  
-- Roles (admin/user)  
-- Validações  
-- Integração React  
-- Repositório organizado  
-- README completo  
-
----
-
-## 🎤 Apresentação
-
-- Arquitetura do projeto  
-- Relação entre entidades  
-- Fluxo de autenticação  
-- Segurança aplicada  
-- Rotas protegidas  
-- CRUD no React  
-- Conclusões  
-
----
-
-## 🧠 Conclusão
-
-Projeto fullstack com:
-
-- Backend organizado  
-- Segurança com JWT  
-- Integração frontend/backend  
-- Controle de acesso por roles
-
-Grupo: Leonardo, Valeria, Samyra
-  
+**Desenvolvido por:**
+👤 Valeria | 👤 Leonardo | 👤 Samyra
 
 
